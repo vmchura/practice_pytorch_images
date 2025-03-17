@@ -25,10 +25,9 @@
 % Format the header
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
-\rhead{Professor: \@professor\\3501MO3313/2024 - Machine Learning}
+\rhead{Professor: \@professor\\3501MO3634/2024 - Tècniques avançades de Machine Learning}
 \lhead{Student: \@author\\\today}
 \chead{}
-
 % Display collaborators and sources
 \newcommand{\@citations}{\par\textbf{Sources:} \@sources}
 \newcommand{\@showcitation}{\ifnum\value{problem}=1\@citations\fi}
