@@ -30,16 +30,16 @@
 
     After various iterations I will comment three.
     \begin{enumerate}
-        \item \textbf{The simple one}: No resizing was applied (although I initially resized the images to 32x32 in the code, which was unnecessary).
+        \item \textbf{The simple one [/experiments/Scratch01.ipynb]}: No resizing was applied (although I initially resized the images to 32x32 in the code, which was unnecessary).
         This model consists of only two chains of operations, such as \lstinline|self.pool1(self.relu1(self.conv1(x)))|, followed by a final affine linear transformation like \lstinline|nn.Linear(128, 10)|.
         This approach provided the insight that the model learns quite easily, reaching an accuracy of up to 80\%.
         Based on this, I decided to increase the model's complexity and reduce the learning rate.
 
-        \item \textbf{The complex one}: In this iteration, I maintained the original image size but increased the complexity of each layer and added an extra layer, making it three in total.
+        \item \textbf{The complex one [/experiments/Scratch06.ipynb]}: In this iteration, I maintained the original image size but increased the complexity of each layer and added an extra layer, making it three in total.
         Each layer follows the structure \lstinline|self.pool1(self.bn1(self.relu1(self.conv1(x))))|, with a final affine linear transformation like \lstinline|nn.Linear(512, 10)|.
         However, this approach resulted in a model that was too complex to effectively learn from the data.
 
-        \item \textbf{The medium one}: For this iteration, I used a larger image size of 64x64, added an extra layer, and modified the order of operations within each layer.
+        \item \textbf{The medium one [/experiments/Scratch05\_complex.ipynb]}: For this iteration, I used a larger image size of 64x64, added an extra layer, and modified the order of operations within each layer.
         This new model performed better than the previous ones, but its learning stopped after approximately 30 epochs.
     \end{enumerate}
 
@@ -70,13 +70,13 @@
     \begin{enumerate}
         \item \textbf{MobileNet}: As suggested, I started with this architecture, which gave me a glimpse of how easy it is to apply transfer learning.
         \begin{enumerate}
-            \item \textbf{With a size of 224x224}: The first iteration was run using only the CPU, and each epoch took 25 minutes.
+            \item \textbf{With a size of 224x224 [/experiments/MobilNet.ipynb]}: The first iteration was run using only the CPU, and each epoch took 25 minutes.
             Surprisingly, it easily matched the performance of the model I had trained from scratch.
             The key aspect of this iteration was that I resized the images to 224x224 and used the following optimizer:
             \lstinline|optim.SGD(model.parameters(), lr=0.001, momentum=0.9)|.
             To my surprise, the model got stuck after a few epochs, so I decided to tweak the hyperparameters.
 
-            \item \textbf{With a size of 64x64}: The next iteration used a GPU, reducing the training time per epoch to 3 minutes.
+            \item \textbf{With a size of 64x64 [/experiments/MobilNet02.ipynb]}: The next iteration used a GPU, reducing the training time per epoch to 3 minutes.
             I noticed that the GPU was not fully utilized, so I increased the batch size to 256.
             Additionally, increasing the learning rate allowed for a more complex classification layer.
 
@@ -102,7 +102,7 @@
             This was not surprising, given the behavior I had observed in the previous experiment.
             In both tutorial parts, images of size 224x224 were used.
 
-            \item \textbf{ResNet50}: After experimenting with simpler models, I switched to ResNet50,
+            \item \textbf{ResNet50 [/experiments/Resnet.ipynb]}: After experimenting with simpler models, I switched to ResNet50,
             applying the same strategy—freezing all layers except the last ones and later unfreezing them.
 
             \begin{enumerate}
@@ -125,7 +125,7 @@ for param in model.fc.parameters():
             \end{enumerate}
         \end{enumerate}
 
-        \item \textbf{EfficientNet}:
+        \item \textbf{EfficientNet [/experiments/EfficientNet.ipynb]}:
         According to the documentation, this model is designed for small images, so I did not resize the original images.
         Unfortunately, with the hyperparameters I used, it performed worse than the other models.
         Additionally, my GPU quota was exhausted, so I could not run further iterations.
@@ -153,7 +153,7 @@ for param in model.fc.parameters():
         \item The strategy of freezing almost all layers then unfreezing them after some epochs worked pretty well.
     \end{enumerate}
 
-    \large\textbf{Part III: Prediction}
+    \large\textbf{Part III: Prediction [/PerformanceOfModels.ipynb]}
     Among all models three of them perform quite similar, MobilNet64x64, MobilNet224x224 and Resnet50.
     For practice purposes I've decided to use them at once to make the prediction or final model.
     The strategy to follow is by vote, if there is a tie (all of them indicates different classifications) the Resnet50 is preferred.
